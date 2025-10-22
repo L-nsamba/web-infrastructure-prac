@@ -1,11 +1,19 @@
 import requests
+import os
+from dotenv import load_dotenv
+
+#Loading environmental variables
+load_dotenv()
 
 url = "https://api.nasa.gov/neo/rest/v1/feed"
+
+#Accessing the api key from the env file
+api_key = os.getenv("NASA_API_KEY")
 
 queries = {
     "start_date": "2015-09-08",
     "end_date": "2015-09-09",
-    "api_key": "NkkswhIz7pjwfIB18czlQOJoZn01JRZC2WdfhSGy"
+    "api_key": api_key
 }
 
 response = requests.get(url, params=queries)
@@ -26,3 +34,6 @@ if response.status_code == 200:
             distance = round(distance, 2)
             print(f"Name: {name}")
             print(f"Closet distance: {distance} km\n")
+
+else:
+    print(f"Status code issue {response.status_code} \n")
