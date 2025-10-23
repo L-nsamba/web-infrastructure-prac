@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV MAZE SHOW SEARCH</title>
+    <style>
+        body{
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        input{
+            padding: 10px;
+            width: 250px;
+        }
+        button{
+            padding: 10px;
+            cursor: pointer;
+        }
+        img{
+            margin-top: 20px;
+            max-width: 300px;
+            border-radius: 10px;
+        }
+        .show-info{
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Search for a TV show/movie</h1>
+    <p>Entered desired show name and you will be able to see its ratings and description</p>
+
+    <input type="text" placeholder="e.g The Simpsons" id="searchBox">
+    <button id="searchBtn">Search</button>
+
+    <div class="show-info" id="showInfo"></div>
+
+    <script>
+        const searchBox = document.getElementById(`searchBox`);
+        const searchBtn = document.getElementById(`searchBtn`);
+        const showInfo = document.getElementById(`showInfo`);
+
+        searchBtn.addEventListener('click', ()=> {
+            const showName = searchBox.value.trim();
+            if(!showName) return alert("Please enter a show name.")
+
+            fetch(`https://api.tvmaze.com/search/shows?q=${encodeURIComponent(showName)}`)
+                // Conversion of the response into json format
+                .then(res => res.json())
+                //Filtering the data entered by the user
+                .then(data => {
+                    //This if condition will handle if the show is not existant on the TV MAZE API
+                    if (data.length === 0) {
+                        showInfo.innerHTML = "<p>No show found. Try another</p>"
+                        return;
+                    }
+
+                    //Defining the constants and accessing the corresponding output from the json file
+                    const show = data[0].show
+                    const image = show.image ? show.image.medium : "" ;
+                    const rating = show.rating.average ? show.rating.average : "N/A";
+                    const summary = show.summary ? show.summary : "No description avaliable.";
+
+                    showInfo.innerHTML = `
+                    <img src="${image}" alt="Show Image">
+                    <h2>${show.name}</h2>
+                    <p><strong>Rating: </strong>${rating}</p>
+                    <p>${summary}</p>
+                    `;
+                    })
+                .catch(() => {
+                    showInfo.innerHTML = "<p>Something went wrong. Please try again!</p>"
+                });
+        });
+    </script>
+</body>
+</html>
