@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reddit Subreddits Finder</title>
+</head>
+<body>
+
+    <h1>Search Reddit Subreddits</h1>
+    <p>Enter your desired subreddit and we will display details about it</p>
+
+    <input type="text" placeholder="Enter subreddit" id="searchBox">
+    <button id="searchBtn">Search</button>
+
+    <div id="result"></div>
+
+
+    <script>
+        const searchBox = document.getElementById('searchBox');
+        const searchBtn = document.getElementById('searchBtn');
+        const result = document.getElementById('result');
+
+        searchBtn.addEventListener("click", () => {
+            const subreddit = searchBox.value.trim();
+            if(!subreddit){
+                alert("Please enter a subreddit name")
+                return;
+            }
+
+            result.innerHTML = `<p>Loading data for your subreddit r/${subreddit}</p>`
+
+            fetch(`https://www.reddit.com/r/${encodeURIComponent(subreddit)}/about.json`, {
+                headers: {
+                    "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36^"
+                }
+            })
+            .then(res => {
+                if(!res.ok) throw new Error("Subreddit not found")
+                return res.json()
+            })
+            .then(data => {
+                const info = data.data
+                result.innerHTML = `
+                    <h2>r/${info.display_name}</h2>
+                    <p><strong>Public Description: </strong>${info.public_description || "N/A"}</p>
+                    <p><strong>Description: </strong>${info.description || "n/a"}</p>
+                    <p><strong>Subscribers: </strong>${info.subscribers || "N/A"}</p>
+                `;
+            })
+            .catch(() => {
+                result.innerHTML = `<p>Subreddit not found</p>`
+            })
+        })
+    </script>
+</body>
+</html>
