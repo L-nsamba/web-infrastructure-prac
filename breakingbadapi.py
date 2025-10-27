@@ -10,6 +10,8 @@ data = response.json()
 show_name = (data[0]["show"]["name"])
 show_rating = (data[0]["show"]["rating"])
 show_description = (data[0]["show"]["summary"])
+show_image = (data[0]["show"]["image"])
+show_image_url = show_image["medium"] if show_image else ""
 
 print(f"\nShow Name: {show_name}")
 print(f"\nShow Rating: {show_rating['average']}")
@@ -24,6 +26,7 @@ html_content = f"""
     <title>TV MAZE EXTRACTING BREAKING BAD API</title>
 </head>
 <body>
+    <img src="{show_image_url}" alt="{show_image}">
     <h1>{show_name}</h1>
     <p>{show_rating}</p>
     <p>{show_description}</p>

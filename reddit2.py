@@ -19,9 +19,9 @@ import requests
 import time
 
 #We set limits here so the user doesn't exceed the rate limit set by Reddit
-MAX_REQUESTS = 60 #User will have to wait 60 seconds when rate limit is reached
+MAX_REQUESTS = 60 #maximum times user can place request before a time out
 used_requests = 0
-start_time = time.time()
+start_time = time.time() #Current time in seconds
 
 while True:
     #Prompt for user to enter desired subreddit they want to check out

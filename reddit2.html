@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reddit Subreddits Finder</title>
+    <style>
+        body{
+            text-align: center;
+            margin: 50px;
+        }
+    </style>
 </head>
 <body>
 
@@ -43,9 +49,9 @@
                 const info = data.data
                 result.innerHTML = `
                     <h2>r/${info.display_name}</h2>
-                    <p><strong>Public Description: </strong>${info.public_description || "N/A"}</p>
-                    <p><strong>Description: </strong>${info.description || "n/a"}</p>
-                    <p><strong>Subscribers: </strong>${info.subscribers || "N/A"}</p>
+                    <p><strong>Public Description: </strong>${info.public_description || "N/A"}</p><br>
+                    <p><strong></strong>Detailed Description: </strong>${info.description || "N/A"}</p><br>
+                    <p><strong>Subscribers: </strong>${info.subscribers || "N/A"}</p><br>
                 `;
             })
             .catch(() => {
